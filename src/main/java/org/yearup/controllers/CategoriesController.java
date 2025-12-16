@@ -36,12 +36,15 @@ public class CategoriesController
     // add the appropriate annotation for a get action
     @GetMapping
     @PreAuthorize("permitAll()")
-    public List<Category> getAll(){
+    public List<Category> getAll() {
         try {
             return categoryDao.getAllCategories();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There is an error.");
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "There is an error."
+            );
         }
+    }
 
 
     // add the appropriate annotation for a get action
