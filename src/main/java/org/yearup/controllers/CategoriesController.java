@@ -65,14 +65,26 @@ public class CategoriesController
 
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
-
-
-        // get a list of product by categoryId
-        return null;
+    @GetMapping("{categoryId}/products")
+    @PreAuthorize("permitAll()")
+    public List<Product> getProductsById(@PathVariable int categoryId) {
+        try {
+            Category category = categoryDao.getById(categoryId);
+            if (category == null)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
+            return productDao.listByCategoryId(categoryId);
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "There is an error."
+            );
+        }
     }
 
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
+
     public Category addCategory(@RequestBody Category category)
     {
         // insert the category
