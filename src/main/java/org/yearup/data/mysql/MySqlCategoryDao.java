@@ -5,10 +5,7 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +20,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public List<Category> getAllCategories() throws SQLException {
         List<Category> categories = new ArrayList<>();
-        String sql = "SELECT category_id, name, description FROM categories;";
+        String query = "SELECT category_id, name, description FROM categories;";
 
         try(Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(query);
             ResultSet row = statement.executeQuery()) {
             while (row.next()) {
                 categories.add(mapRow(row));
@@ -51,15 +48,32 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             }
 
         }
-
         // get category by id
         return null;
     }
 
     @Override
-    public Category create(Category category)
-    {
+    public Category create(Category category) throws SQLException {
+        String query = "INSERT INTO categories (name, description) VALUES (?, ?);";
 
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS))
+        {
+            statement.setString(1, category.getName());
+            statement.setString(2, category.getDescription());
+
+            int rowsUpdate = statement.executeUpdate();
+
+            if (rowsUpdate <= 0){
+                return null;
+            }
+            try (ResultSet keys = statement.getGeneratedKeys()){
+                if (keys.next()){
+                    int newId = keys.getInt(1);
+                    return getById(newId);
+                }
+            }
+        }
         // create a new category
         return null;
     }
