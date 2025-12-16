@@ -17,7 +17,7 @@ import java.util.List;
     // http://localhost:8080/categories
 // add annotation to allow cross site origin requests
 @RestController
-@RequestMapping("categories")
+@RequestMapping("/categories")
 @CrossOrigin
 public class CategoriesController
 {
@@ -119,9 +119,20 @@ public class CategoriesController
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
-
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteCategory(@PathVariable int id)
     {
-        // delete the category by id
+        try{
+            Category existing = categoryDao.getById(id);
+            if(existing == null)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
+            categoryDao.delete(id);
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There is an error.");
+        }
     }
 }
