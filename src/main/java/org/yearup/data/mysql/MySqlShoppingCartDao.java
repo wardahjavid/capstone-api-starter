@@ -47,12 +47,11 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
     @Override
     public void addProduct(int userId, int productId) throws SQLException {
-        String sql =
-                "INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, 1) " +
+        String query = "INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, 1) " +
                         "ON DUPLICATE KEY UPDATE quantity = quantity + 1;";
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql))
+             PreparedStatement statement = connection.prepareStatement(query))
         {
             statement.setInt(1, userId);
             statement.setInt(2, productId);
@@ -63,10 +62,10 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     @Override
     public void updateProductQuantity(int userId, int productId, int quantity) throws SQLException
     {
-        String sql = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?;";
+        String query = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?;";
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql))
+             PreparedStatement statement = connection.prepareStatement(query))
         {
             statement.setInt(1, quantity);
             statement.setInt(2, userId);
@@ -77,10 +76,10 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
     @Override
     public void clearCart(int userId) throws SQLException{
-        String sql = "DELETE FROM shopping_cart WHERE user_id = ?;";
+        String query = "DELETE FROM shopping_cart WHERE user_id = ?;";
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
             statement.executeUpdate();
         }
