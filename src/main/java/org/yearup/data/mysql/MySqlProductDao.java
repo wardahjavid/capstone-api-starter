@@ -22,29 +22,34 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
     public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String subCategory)
     {
         List<Product> products = new ArrayList<>();
-
         String sql = "SELECT * FROM products " +
                 "WHERE (category_id = ? OR ? = -1) " +
-                "   AND (price <= ? OR ? = -1) " +
-                "   AND (subcategory = ? OR ? = '') ";
+                "  AND (price >= ? OR ? = -1) " +
+                "  AND (price <= ? OR ? = -1) " +
+                "  AND (subcategory = ? OR ? = '') ";
 
-        categoryId = categoryId == null ? -1 : categoryId;
-        minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
-        maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
-        subCategory = subCategory == null ? "" : subCategory;
+        int category = (categoryId == null) ? -1 :categoryId;
+        BigDecimal minimum = (minPrice == null) ? new BigDecimal("-1") : minPrice;
+        BigDecimal maximum = (maxPrice == null) ? new BigDecimal("-1") : maxPrice;
+        String subcategory = (subCategory == null) ? "" : subCategory.trim();
+
 
         try (Connection connection = getConnection())
         {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, categoryId);
-            statement.setInt(2, categoryId);
-            statement.setBigDecimal(3, minPrice);
-            statement.setBigDecimal(4, minPrice);
-            statement.setString(5, subCategory);
-            statement.setString(6, subCategory);
+            statement.setInt(1, category);
+            statement.setInt(2, category);
+
+            statement.setBigDecimal(3, minimum);
+            statement.setBigDecimal(4, minimum);
+
+            statement.setBigDecimal(5, maximum);
+            statement.setBigDecimal(6, maximum);
+
+            statement.setString(7, subcategory);
+            statement.setString(8, subcategory);
 
             ResultSet row = statement.executeQuery();
-
             while (row.next())
             {
                 Product product = mapRow(row);
