@@ -24,10 +24,10 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     {
         ShoppingCart cart = new ShoppingCart();
 
-        String sql = "SELECT product_id, quantity FROM shopping_cart WHERE user_id = ?;";
+        String query = "SELECT product_id, quantity FROM shopping_cart WHERE user_id = ?;";
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql))
+             PreparedStatement statement = connection.prepareStatement(query))
         {
             statement.setInt(1, userId);
 
