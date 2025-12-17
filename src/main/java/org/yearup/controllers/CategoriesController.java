@@ -41,8 +41,7 @@ public class CategoriesController
             return categoryDao.getAllCategories();
         } catch (Exception e) {
             throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "There is an error."
-            );
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
@@ -58,7 +57,7 @@ public class CategoriesController
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There is an error.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
 
         }
     }
@@ -77,7 +76,7 @@ public class CategoriesController
             throw e;
         } catch (Exception e) {
             throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "There is an error."
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad."
             );
         }
     }
@@ -92,7 +91,7 @@ public class CategoriesController
         try{
             return categoryDao.create(category);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There is an error.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
@@ -112,7 +111,7 @@ public class CategoriesController
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There is an error.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
@@ -132,7 +131,7 @@ public class CategoriesController
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There is an error.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 }
