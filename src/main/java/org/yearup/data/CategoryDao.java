@@ -11,5 +11,5 @@ public interface CategoryDao
     Category getById(int categoryId) throws SQLException;
     Category create(Category category) throws SQLException;
     void update(int categoryId, Category category) throws SQLException;
-    void delete(int categoryId);
+    void delete(int categoryId) throws SQLException;
 }
