@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.yearup.data.mysql.MySqlProductDao.mapRow;
+
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 {
@@ -28,6 +30,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             while (row.next()) {
                 categories.add(mapRow(row));
             }
+
         }
         return categories;
     }
