@@ -57,4 +57,7 @@ public class ShoppingCartItem
 
         return subTotal.subtract(discountAmount);
     }
+
+    public void setProductId(int productId) {
+    }
 }
