@@ -36,18 +36,10 @@ public class ShoppingCartController {
     public ShoppingCart getCart(Principal principal) {
         try {
             // get the currently logged in username
-            if (principal == null) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not logged in.");
-            }
-            String userName = principal.getName();
-            // find database user by userId
-            User user = userDao.getByUserName(userName);
-            if (user == null)
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
-            int userId = user.getId();
+            int userId = getUserId(principal);
 
             // use the shoppingcartDao to get all items in the cart and return the cart
-            ShoppingCart cart = shoppingCartDao.getByUserId(user.getId());
+            ShoppingCart cart = shoppingCartDao.getByUserId(userId);
             return (cart != null) ? cart : new ShoppingCart();
         } catch (ResponseStatusException e) {
             throw e;
