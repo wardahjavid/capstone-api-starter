@@ -119,8 +119,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             setName(name);
             setDescription(description);
         }};
-
         return category;
     }
-
 }
