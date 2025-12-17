@@ -51,7 +51,6 @@ public class ShoppingCartController {
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
     @PostMapping("/products/{productId}")
-    @ResponseStatus(HttpStatus.CREATED)
     public ShoppingCart addProductToCart(@PathVariable int productId, Principal principal) {
         try {
             if (productDao.getById(productId) == null) {
@@ -72,16 +71,17 @@ public class ShoppingCartController {
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
     @PutMapping("/products/{productId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateProductInCart(@PathVariable int productId, @RequestBody ShoppingCartItem item, Principal
+    public ShoppingCart updateProductInCart(@PathVariable int productId, @RequestBody ShoppingCartItem item, Principal
             principal) {
         try {
             if (productDao.getById(productId) == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
             if (item == null || item.getQuantity() <= 0)
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity has to be greater then 0.");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity has to be greater than 0.");
             int userId = getUserId(principal);
             shoppingCartDao.updateProductQuantity(userId, productId, item.getQuantity());
+            ShoppingCart cart = shoppingCartDao.getByUserId(userId);
+            return (cart != null) ? cart : new ShoppingCart();
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -92,11 +92,11 @@ public class ShoppingCartController {
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
     @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void clearCart(Principal principal) {
+    public ShoppingCart clearCart(Principal principal) {
         try {
             int userId = getUserId(principal);
             shoppingCartDao.clearCart(userId);
+            return new ShoppingCart();
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
