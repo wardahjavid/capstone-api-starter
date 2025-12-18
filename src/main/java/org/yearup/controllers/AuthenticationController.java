@@ -74,7 +74,7 @@ public class AuthenticationController {
                 return new ResponseEntity<>(existUser, HttpStatus.CREATED);
             }
             String role = newUser.getRole();
-            if (role == null || role.isBlank())
+            if (role == null || role.isEmpty())
                 role = "ROLE_USER";
 
             // create user
