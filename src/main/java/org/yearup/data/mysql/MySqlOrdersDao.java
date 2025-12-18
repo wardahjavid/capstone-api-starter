@@ -26,7 +26,7 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
     }
 
     @Override
-    public int checkout(int userId){
+    public int checkout(int userId) throws SQLException {
         ShoppingCart shoppingCart = shoppingCartDao.getByUserId(userId);
         if (shoppingCart == null || shoppingCart.getItems().isEmpty()) {
             throw new RuntimeException("Cart is empty.");
@@ -96,7 +96,7 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
             connection.commit();
             connection.setAutoCommit(true);
             return orderId;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
