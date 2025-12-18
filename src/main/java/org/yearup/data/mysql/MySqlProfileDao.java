@@ -8,8 +8,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 @Component
-public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
-{
+public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
     public MySqlProfileDao(DataSource dataSource)
     {
         super(dataSource);
@@ -23,7 +22,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
 
         try(Connection connection = getConnection())
         {
-            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, profile.getUserId());
             ps.setString(2, profile.getFirstName());
             ps.setString(3, profile.getLastName());
@@ -42,6 +41,42 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Profile getByUserId(int userId) {
+        String query = """
+                SELECT user_id, first_name, last_name, phone, email, address, city, state, zip 
+                FROM profiles
+                WHERE user_id = ?
+                """;
+        try(Connection connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if(!rs.next()) return null;
+
+                Profile profile = new Profile();
+                profile.setUserId(rs.getInt("user_id"));
+                profile.setFirstName(rs.getString("first_name"));
+                profile.setLastName(rs.getString("last_name"));
+                profile.setPhone(rs.getString("phone_number"));
+                profile.setEmail(rs.getString("email"));
+                profile.setAddress(rs.getString("address"));
+                profile.setCity(rs.getString("city"));
+                profile.setState(rs.getString("state"));
+                profile.setZip(rs.getString("zip"));
+                return profile;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } ;
+
+
+
+    @Override
+    public void update(Profile profile) {
+
     }
 }
 
