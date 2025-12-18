@@ -51,6 +51,4 @@ public class ProfileController {
         }
         profileDao.update(profile);
     }
-
-
 }
