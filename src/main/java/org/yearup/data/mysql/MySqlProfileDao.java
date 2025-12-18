@@ -70,16 +70,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } ;
-
-
-
-    @Override
-    public void update(Profile profile) {
-
         }
-
-    }
 
     @Override
     public void update(Profile profile) {
@@ -88,15 +79,5 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
                 SET first_name = ?, last_name = ?, phone = ?, email = ?, address = ?, city = ?, state = ?, zip = ?
                 WHERE user_id = ?
                 """;
-        try (Connection connection = getConnection()
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-        {
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } ;
-
-
-        }
-}
-
+        try(Connection connection = getConnection();
+        )
