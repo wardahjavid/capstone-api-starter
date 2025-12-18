@@ -6,6 +6,7 @@ import org.yearup.data.ProfileDao;
 import org.yearup.data.ShoppingCartDao;
 import org.yearup.models.Profile;
 import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
     private ShoppingCartDao shoppingCartDao;
     private ProfileDao profileDao;
+    private BigDecimal discountAmount;
 
 
     public MySqlOrdersDao(DataSource dataSource, ShoppingCartDao shoppingCartDao, ProfileDao profileDao) {
@@ -45,11 +47,13 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
                     INSERT INTO order_line_items (order_id, product_id, sales_price, quantity, discount)
                     VALUES (?, ?, ?, ?, ?)
                     """;
-            String clearCartsql = "DELETE FROM shopping_cart WHERE user_id = ?";
+            String clearCartSql = "DELETE FROM shopping_cart WHERE user_id = ?";
             try (Connection connection = getConnection()) {
                 connection.setAutoCommit(false);
                 int orderId;
 
+
+                //insert order
                 try (PreparedStatement ps = connection.prepareStatement(insertOrderSql, PreparedStatement.RETURN_GENERATED_KEYS)) {
                     ps.setInt(1, userId);
                     ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
@@ -66,9 +70,31 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
                         orderId = keys.getInt(1);
                     }
                 }
+
+                //insert line items
+                try (PreparedStatement ps = connection.prepareStatement(insertLineSql)){
+                    for(ShoppingCartItem item : shoppingCart.getItems().values()) {
+                        int productId = item.getProductId();
+                        int quantity = item.getQuantity();
+
+                        BigDecimal salesPrice = item.getProduct().getPrice();
+                        BigDecimal lineSubtotal = salesPrice.multiply(item.getDiscountPercent());
+
+                        ps.setInt(1, orderId);
+                        ps.setInt(2, productId);
+                        ps.setBigDecimal(3, salesPrice);
+                        ps.setInt(4, quantity);
+                        ps.setBigDecimal(5, discountAmount);
+                        ps.executeUpdate();
+                    }
+                }
+
+
+
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
 
 
     }
