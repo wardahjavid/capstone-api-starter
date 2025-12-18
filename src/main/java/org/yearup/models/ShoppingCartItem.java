@@ -59,5 +59,6 @@ public class ShoppingCartItem
     }
 
     public void setProductId(int productId) {
+        throw new UnsupportedOperationException("Use setProduct(Product).");
     }
 }

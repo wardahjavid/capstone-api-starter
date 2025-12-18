@@ -50,8 +50,7 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication, false);
 
-        try
-        {
+        try {
             User user = userDao.getByUserName(loginDto.getUsername());
 
             if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -59,37 +58,50 @@ public class AuthenticationController {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
             return new ResponseEntity<>(new LoginResponseDto(jwt, user), httpHeaders, HttpStatus.OK);
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<User> register(@Valid @RequestBody RegisterUserDto newUser) {
-
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterUserDto newUser)
+    {
         try
         {
-            boolean exists = userDao.exists(newUser.getUsername());
-            if (exists)
-            {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Already Exists.");
+            User existUser = userDao.getByUserName(newUser.getUsername());
+            if (existUser != null) {
+                return new ResponseEntity<>(existUser, HttpStatus.CREATED);
             }
+            String role = newUser.getRole();
+            if (role == null || role.isBlank())
+                role = "ROLE_USER";
 
             // create user
-            User user = userDao.create(new User(0, newUser.getUsername(), newUser.getPassword(), newUser.getRole()));
+            User user = userDao.create(new User(0, newUser.getUsername(), newUser.getPassword(), role));
+            if (user == null)
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Creating a User failed.");
 
-            // create profile
-            Profile profile = new Profile();
-            profile.setUserId(user.getId());
-            profileDao.create(profile);
-
+            // create profile (do not fail registration if this breaks)
+            try {
+                Profile profile = new Profile();
+                profile.setUserId(user.getId());
+                profile.setFirstName("");
+                profile.setLastName("");
+                profile.setPhone("");
+                profile.setEmail("");
+                profile.setAddress("");
+                profile.setCity("");
+                profile.setState("");
+                profile.setZip("");
+                profileDao.create(profile);
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
             return new ResponseEntity<>(user, HttpStatus.CREATED);
-        }
-        catch (Exception e)
-        {
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }

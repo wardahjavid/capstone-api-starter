@@ -28,6 +28,10 @@ public class ShoppingCart
         items.put(item.getProductId(), item);
     }
 
+    public void addItem(ShoppingCartItem item) {
+        add(item);
+    }
+
     public ShoppingCartItem get(int productId)
     {
         return items.get(productId);
@@ -41,8 +45,5 @@ public class ShoppingCart
                                 .reduce( BigDecimal.ZERO, (lineTotal, subTotal) -> subTotal.add(lineTotal));
 
         return total;
-    }
-
-    public void addItem(ShoppingCartItem item) {
     }
 }

@@ -2,10 +2,12 @@ package org.yearup.data.mysql;
 
 import org.springframework.stereotype.Component;
 import org.yearup.data.ShoppingCartDao;
+import org.yearup.models.Product;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +31,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
                                 p.name, p.price, p.category_id, p.description,
                                 p.subcategory, p.stock, p.featured, p.image_url
                         FROM shopping_cart sc
-                        JOIN products p ON p.product_id
+                        JOIN products p ON p.product_id = sc.product_id
                         WHERE sc.user_id = ?
                 
                 """;
@@ -43,10 +45,22 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
             {
                 while (row.next())
                 {
+                    Product product= new Product(
+                            row.getInt("p_product_id"),
+                            row.getString("name"),
+                            row.getBigDecimal("price"),
+                            row.getInt("category_id"),
+                            row.getString("description"),
+                            row.getString("subcategory"),
+                            row.getInt("stock"),
+                            row.getBoolean("featured"),
+                            row.getString("image_url")
+                    );
                     ShoppingCartItem item = new ShoppingCartItem();
-                    item.setProductId(row.getInt("product_id"));
+                    item.setProduct(product);
                     item.setQuantity(row.getInt("quantity"));
-                    cart.addItem(item);
+                    item.setDiscountPercent(BigDecimal.ZERO);
+                    cart.add(item);
                 }
             }
         } catch (SQLException e) {
