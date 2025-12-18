@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.yearup.data.OrdersDao;
 import org.yearup.data.ProfileDao;
 import org.yearup.data.ShoppingCartDao;
+import org.yearup.models.Order;
 import org.yearup.models.Profile;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
@@ -26,9 +27,10 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
     }
 
     @Override
-    public int checkout(int userId) throws SQLException {
+    public Order checkout(int userId) throws SQLException {
         ShoppingCart shoppingCart = shoppingCartDao.getByUserId(userId);
-        if (shoppingCart == null || shoppingCart.getItems().isEmpty()) {
+        if (shoppingCart == null || shoppingCart.getItems().isEmpty())
+        {
             throw new RuntimeException("Cart is empty.");
         }
 
