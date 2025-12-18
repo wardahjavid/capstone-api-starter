@@ -38,7 +38,7 @@ public class ProfileController {
     }
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatedProfile(@RequestBody Profile profile, Principal principal) {
+    public void updateProfile(@RequestBody Profile profile, Principal principal) {
         User user = userDao.getByUserName(principal.getName());
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);

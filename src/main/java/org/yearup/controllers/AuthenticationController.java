@@ -86,17 +86,9 @@ public class AuthenticationController {
             try {
                 Profile profile = new Profile();
                 profile.setUserId(user.getId());
-                profile.setFirstName("");
-                profile.setLastName("");
-                profile.setPhone("");
-                profile.setEmail("");
-                profile.setAddress("");
-                profile.setCity("");
-                profile.setState("");
-                profile.setZip("");
                 profileDao.create(profile);
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
+            } catch (Exception e) {
+                //do not fail registration if the profile fails to create
             }
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         } catch (ResponseStatusException e) {
