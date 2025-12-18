@@ -18,8 +18,6 @@ import java.time.LocalDateTime;
 public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
     private ShoppingCartDao shoppingCartDao;
     private ProfileDao profileDao;
-    private BigDecimal discountAmount;
-
 
     public MySqlOrdersDao(DataSource dataSource, ShoppingCartDao shoppingCartDao, ProfileDao profileDao) {
         super(dataSource);
@@ -28,7 +26,7 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
     }
 
     @Override
-    public int checkout(int userId) {
+    public int checkout(int userId){
         ShoppingCart shoppingCart = shoppingCartDao.getByUserId(userId);
         if (shoppingCart == null || shoppingCart.getItems().isEmpty()) {
             throw new RuntimeException("Cart is empty.");
@@ -78,7 +76,8 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
                     int quantity = item.getQuantity();
 
                     BigDecimal salesPrice = item.getProduct().getPrice();
-                    BigDecimal lineSubtotal = salesPrice.multiply(item.getDiscountPercent());
+                    BigDecimal lineSubtotal = salesPrice.multiply(new BigDecimal(quantity));
+                    BigDecimal discountAmount = lineSubtotal.multiply(item.getDiscountPercent());
 
                     ps.setInt(1, orderId);
                     ps.setInt(2, productId);
@@ -95,8 +94,9 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrdersDao {
             }
 
             connection.commit();
+            connection.setAutoCommit(true);
             return orderId;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
