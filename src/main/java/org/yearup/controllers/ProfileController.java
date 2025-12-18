@@ -36,6 +36,19 @@ public class ProfileController {
         }
         return profile;
     }
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatedProfile(@RequestBody Profile profile, Principal principal) {
+        User user = userDao.getByUserName(principal.getName());
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+        profile.setUserId(user.getId());
 
-
+        Profile existing = profileDao.getByUserId(user.getId());
+        if (existing == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profile not found.");
+        }
+        profileDao.update(profile);
+    }
 }
