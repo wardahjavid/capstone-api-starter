@@ -162,7 +162,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         return category;
     }
 
-    //That method safely closes any JDBC resource by first checking for `null` and then calling `close()` inside a try/catch so cleanup errors don’t crash the application. It was commonly used before try-with-resources, which now automatically handles this cleanup and makes the helper unnecessary.
+    //That method safely closes any JDBC resource by first checking for `null`
+    //and then calling `close()` inside a try/catch so cleanup errors don’t crash
+    // the application. It was commonly used before try-with-resources, which
+    // now automatically handles this cleanup and makes the helper unnecessary.
     private void close(AutoCloseable thing) {
         if (thing != null) {
             try {
