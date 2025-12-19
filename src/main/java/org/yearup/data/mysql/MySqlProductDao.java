@@ -48,6 +48,11 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
             statement.setInt(1, category);
             statement.setInt(2, category);
 
+            //The product filters were not applied correctly, so searching by
+            // category, price, or subcategory returned incorrect results.
+            // The fix was updating the SQL and parameters so minPrice, maxPrice,
+            // and subcategory are all properly checked and safely ignored when
+            // not provided.
             statement.setBigDecimal(3, minimum);
             statement.setBigDecimal(4, minimum);
 
