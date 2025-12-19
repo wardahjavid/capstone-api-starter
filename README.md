@@ -41,12 +41,9 @@ Bro Code Videos on Java on Youtube
 Getting started with @Controller in Spring
 https://www.youtube.com/watch?v=c9iKKAZY00g&list=PLGJny_f99PBKyPL6kfX3i8VB8K1QqxEUx
 
-Spring boot simple project | Book Store Management | MySql | Thymeleaf |JPA
-https://www.youtube.com/watch?v=xnur2ujza6k
-
 Spring Boot Tutorial for Beginners — Full Course
 Covers controllers, REST endpoints, routing, services, models, and running a Spring Boot app.
-(https://www.youtube.com/watch?v=Cw0J6jYJtzw)
+https://www.youtube.com/watch?v=Cw0J6jYJtzw
 
 Spring Boot + MySQL Course for Beginners
 Guided project showing full CRUD and database integration.
