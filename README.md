@@ -39,7 +39,7 @@ Bro Code Videos on Java
 
 Spring Boot Tutorial for Beginners — Full Course
 Covers controllers, REST endpoints, routing, services, models, and running a Spring Boot app.
-(https://www.youtube.com/watch?v=Cw0J6jYJtzw&utm_source=chatgpt.com)
+(https://www.youtube.com/watch?v=Cw0J6jYJtzw)
 
 Spring Boot & Spring MVC in 100 Seconds
 https://www.youtube.com/watch?v=5qW9yDtVJC8
