@@ -45,7 +45,7 @@ Build a Shopping Cart API in Spring Boot
 https://www.youtube.com/watch?v=V9OY6Ml3vV4
 
 Spring Boot + MySQL Course for Beginners
-Guided project showing full CRUD + database integration.
+Guided project showing full CRUD and database integration.
 https://www.youtube.com/watch?v=9SGDpanrc8U
 
 Build a REST API with Spring Boot + MySQL
@@ -53,7 +53,7 @@ Demo project similar to Capstone goals, REST CRUD endpoints.
 https://www.youtube.com/watch?v=vtPkZShrvXQ
 
 JDBC Tutorial for Beginners (Java + MySQL)
-Explains JDBC, PreparedStatement, ResultSet — essential for DAO layer.
+Explains JDBC, PreparedStatement, ResultSet, essential for DAO layer.
 https://www.youtube.com/watch?v=3EoI-6lQFIE
 
 Potato Sensei
