@@ -24,7 +24,25 @@ public class ProductsController
         this.productDao = productDao;
     }
 
-    // SEARCH / FILTER PRODUCTS
+    // NEW: GET /products/genres
+    @GetMapping("/genres")
+    @PreAuthorize("permitAll()")
+    public List<String> getGenres()
+    {
+        try
+        {
+            return productDao.getGenres();
+        }
+        catch (Exception e)
+        {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Oops... our bad."
+            );
+        }
+    }
+
+    // GET /products (filters)
     @GetMapping
     @PreAuthorize("permitAll()")
     public List<Product> search(
@@ -47,7 +65,7 @@ public class ProductsController
         }
     }
 
-    // GET PRODUCT BY ID
+    // GET /products/{id}
     @GetMapping("/{id}")
     @PreAuthorize("permitAll()")
     public Product getById(@PathVariable int id)
@@ -79,7 +97,7 @@ public class ProductsController
         }
     }
 
-    // ADD PRODUCT
+    // POST /products
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public Product addProduct(@RequestBody Product product)
@@ -97,12 +115,10 @@ public class ProductsController
         }
     }
 
-    // UPDATE PRODUCT
+    // PUT /products/{id}
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Product updateProduct(
-            @PathVariable int id,
-            @RequestBody Product product)
+    public Product updateProduct(@PathVariable int id, @RequestBody Product product)
     {
         try
         {
@@ -134,7 +150,7 @@ public class ProductsController
         }
     }
 
-    // DELETE PRODUCT
+    // DELETE /products/{id}
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteProduct(@PathVariable int id)

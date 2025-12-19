@@ -23,7 +23,6 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
     {
         List<Product> products = new ArrayList<>();
 
-        // GENRE filter is subCategory -> DB column subcategory
         String sql = "SELECT * FROM products " +
                 "WHERE (category_id = ? OR ? = -1) " +
                 "  AND (price >= ? OR ? = -1) " +
@@ -34,7 +33,6 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         BigDecimal minimum = (minPrice == null) ? new BigDecimal("-1") : minPrice;
         BigDecimal maximum = (maxPrice == null) ? new BigDecimal("-1") : maxPrice;
 
-        // if null or blank -> "Show All" (no genre filter)
         String genre = (subCategory == null) ? "" : subCategory.trim();
 
         try (Connection connection = getConnection())
@@ -50,11 +48,11 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
             statement.setBigDecimal(5, maximum);
             statement.setBigDecimal(6, maximum);
 
-            // GENRE params
             statement.setString(7, genre);
             statement.setString(8, genre);
 
             ResultSet row = statement.executeQuery();
+
             while (row.next())
             {
                 products.add(mapRow(row));
@@ -66,6 +64,36 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         }
 
         return products;
+    }
+
+    // NEW: return distinct genres
+    @Override
+    public List<String> getGenres()
+    {
+        List<String> genres = new ArrayList<>();
+
+        String sql =
+                "SELECT DISTINCT subcategory " +
+                        "FROM products " +
+                        "WHERE subcategory IS NOT NULL AND subcategory <> '' " +
+                        "ORDER BY subcategory";
+
+        try (Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet row = statement.executeQuery();
+
+            while (row.next())
+            {
+                genres.add(row.getString("subcategory"));
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        return genres;
     }
 
     @Override
@@ -81,6 +109,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
             statement.setInt(1, categoryId);
 
             ResultSet row = statement.executeQuery();
+
             while (row.next())
             {
                 products.add(mapRow(row));
@@ -105,6 +134,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
             statement.setInt(1, productId);
 
             ResultSet row = statement.executeQuery();
+
             if (row.next())
             {
                 return mapRow(row);
@@ -161,15 +191,15 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
     public void update(int productId, Product product)
     {
         String sql = "UPDATE products " +
-                " SET name = ? " +
-                "   , price = ? " +
-                "   , category_id = ? " +
-                "   , description = ? " +
-                "   , subcategory = ? " +
-                "   , image_url = ? " +
-                "   , stock = ? " +
-                "   , featured = ? " +
-                " WHERE product_id = ?";
+                "SET name = ? " +
+                "  , price = ? " +
+                "  , category_id = ? " +
+                "  , description = ? " +
+                "  , subcategory = ? " +
+                "  , image_url = ? " +
+                "  , stock = ? " +
+                "  , featured = ? " +
+                "WHERE product_id = ?";
 
         try (Connection connection = getConnection())
         {
