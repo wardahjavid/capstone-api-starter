@@ -55,10 +55,6 @@ Build a REST API with Spring Boot + MySQL
 Demo project similar to Capstone goals, REST CRUD endpoints.
 https://www.youtube.com/watch?v=vtPkZShrvXQ
 
-JDBC Tutorial for Beginners (Java + MySQL)
-Explains JDBC, PreparedStatement, ResultSet, essential for DAO layer.
-https://www.youtube.com/watch?v=3EoI-6lQFIE
-
 Potato Sensei
 Workbook 9a
 Class Excercises and apireview Workshop
