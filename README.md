@@ -34,6 +34,9 @@ Enforce validation rules on product, category, and profile inputs to ensure data
 
 
 ## Resources
+
+Bro Code Videos on Java 
+
 Spring Boot Tutorial for Beginners — Full Course
 Covers controllers, REST endpoints, routing, services, models, and running a Spring Boot app.
 (https://www.youtube.com/watch?v=Cw0J6jYJtzw&utm_source=chatgpt.com)
