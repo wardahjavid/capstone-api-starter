@@ -135,6 +135,9 @@ public class ProductsController
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public Product updateProduct(@PathVariable int id, @RequestBody Product product)
+    //Bug 2 was fixed in the updateProduct method of ProductsController,
+    // where the code was changed to stop calling create() and instead call
+    // update() after verifying the product exists.
     {
         try
         {
