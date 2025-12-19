@@ -58,8 +58,9 @@ https://www.youtube.com/watch?v=gJrjgg1KVL4
 Java REST API with Spring Boot Tutorial | REST API CRUD Implementation
 https://www.youtube.com/watch?v=iBGkJln9BPo&list=PLcs1FElCmEu121gqGwlQt47d0SqNkzSTK
 
+freecodecamp.com Youtube videos on this and Java
 Build a REST API with Spring Boot + MySQL
-Demo project similar to Capstone goals, REST CRUD endpoints.
+Demo project similar to Capstone goals, REST CRUD endpoints. 
 https://www.youtube.com/watch?v=vtPkZShrvXQ
 
 Potato Sensei
