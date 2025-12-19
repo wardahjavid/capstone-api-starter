@@ -77,7 +77,3 @@ And aother such resources and videos.
 Wardah Javid 
 
 Special thank you to Professor Raymond and to my classmates who helped me!!
-
-Thank you to my instructors and mentors for guidance and feedback.
-
-Thanks to my classmates for support and collaboration.
