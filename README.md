@@ -64,8 +64,8 @@ https://www.youtube.com/watch?v=vtPkZShrvXQ
 
 Potato Sensei
 Workbook 9a
-Class Excercises and apireview Workshop
-And aother such resources and videos.
+Class Excercises, lectures, Workshops and apireview Workshop
+And other such resources and videos.
 
 ## Demo
 
