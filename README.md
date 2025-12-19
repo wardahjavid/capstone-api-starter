@@ -28,10 +28,10 @@ A database client (optional): MySQL Workbench
 Insomnia (for testing endpoints)
 
 ## Future Work
-Add checkout/orders feature (create order from cart)
-Add support for removing a single product from the cart
-Add pagination and sorting for product search
-Add validation rules for product/category/profile inputs
+Add a checkout and orders feature so a user can place an order using the items currently in their shopping cart.\
+Add the ability to remove a single product from the cart instead of clearing the entire cart, improve product searching by adding pagination and sorting.
+Enforce validation rules on product, category, and profile inputs to ensure data is accurate and complete.
+
 
 ## Resources
 Spring Boot Tutorial for Beginners — Full Course
@@ -56,6 +56,9 @@ JDBC Tutorial for Beginners (Java + MySQL)
 Explains JDBC, PreparedStatement, ResultSet — essential for DAO layer.
 https://www.youtube.com/watch?v=3EoI-6lQFIE
 
+Potato Sensei
+Workbook 9a
+Class Excercises and apireview Workshop
 And aother such resources and videos.
 
 ## Demo
@@ -63,14 +66,17 @@ And aother such resources and videos.
 
 <img width="958" height="569" alt="image" src="https://github.com/user-attachments/assets/1e69921e-df15-48d8-ba1c-10a249ec29a3" />
 
+<img width="923" height="560" alt="image" src="https://github.com/user-attachments/assets/c6f81e2b-9916-4036-b313-91cc365e5386" />
 
+<img width="959" height="557" alt="image" src="https://github.com/user-attachments/assets/5b9498e8-6bde-40a7-b97e-42984ecaf2b7" />
 
+<img width="926" height="548" alt="image" src="https://github.com/user-attachments/assets/1188c64a-3ecc-4f1c-a890-9cadde265685" />
 
 
 ## Team Members
-Wardah Javid — API implementation, DAO layer, controllers, testing with Insomnia
+Wardah Javid 
 
-Thanks
+Special thank you to Professor Raymond and to my classmates who helped me!!
 
 Thank you to my instructors and mentors for guidance and feedback.
 
