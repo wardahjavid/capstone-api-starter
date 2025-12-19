@@ -13,34 +13,34 @@ import org.yearup.models.User;
 
 import java.security.Principal;
 
-// convert this class to a REST controller
-// only logged in users should have access to these actions
 @RestController
 @RequestMapping("/cart")
 @CrossOrigin
 @PreAuthorize("isAuthenticated()")
-public class ShoppingCartController {
-    // a shopping cart requires
+public class ShoppingCartController
+{
     private ShoppingCartDao shoppingCartDao;
     private UserDao userDao;
     private ProductDao productDao;
 
-    public ShoppingCartController(ShoppingCartDao shoppingCartDao, UserDao userDao, ProductDao productDao) {
+    public ShoppingCartController(ShoppingCartDao shoppingCartDao, UserDao userDao, ProductDao productDao)
+    {
         this.shoppingCartDao = shoppingCartDao;
         this.userDao = userDao;
         this.productDao = productDao;
     }
 
-    // each method in this controller requires a Principal object as a parameter
+    // GET http://localhost:8080/cart
     @GetMapping
-    public ShoppingCart getCart(Principal principal) {
+    public ShoppingCart getCart(Principal principal)
+    {
         try {
-            // get the currently logged in username
             int userId = getUserId(principal);
-
-            // use the shoppingcartDao to get all items in the cart and return the cart
-            ShoppingCart cart = shoppingCartDao.getByUserId(userId);
-            return (cart != null) ? cart : new ShoppingCart();
+            ShoppingCart shoppingCartcart = shoppingCartDao.getByUserId(userId);
+            if (shoppingCartcart == null) {
+                shoppingCartcart = new ShoppingCart();
+            }
+            return shoppingCartcart;
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -48,19 +48,20 @@ public class ShoppingCartController {
         }
     }
 
-    // add a POST method to add a product to the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be added
+    // POST http://localhost:8080/cart/products/15
     @PostMapping("/products/{productId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ShoppingCart addProductToCart(@PathVariable int productId, Principal principal) {
-        try {
+    public void addProduct(@PathVariable int productId, Principal principal)
+    {
+        try
+        {
+            int userId = getUserId(principal);
+
+            // make sure product exists
             if (productDao.getById(productId) == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
             }
-            int userId = getUserId(principal);
             shoppingCartDao.addProduct(userId, productId);
-            ShoppingCart cart = shoppingCartDao.getByUserId(userId);
-            return (cart != null) ? cart : new ShoppingCart();
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -68,21 +69,25 @@ public class ShoppingCartController {
         }
     }
 
-    // add a PUT method to update an existing product in the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
-    // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
+    // PUT http://localhost:8080/cart/products/15
+    // BODY: { "quantity": 3 }
     @PutMapping("/products/{productId}")
-    public ShoppingCart updateProductInCart(@PathVariable int productId, @RequestBody ShoppingCartItem item, Principal
-            principal) {
-        try {
-            if (productDao.getById(productId) == null)
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
-            if (item == null || item.getQuantity() <= 0)
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity has to be greater than 0.");
+    public void updateProduct(@PathVariable int productId,
+                              @RequestBody ShoppingCartItem item,
+                              Principal principal)
+    {
+        try
+        {
             int userId = getUserId(principal);
+
+            if (productDao.getById(productId) == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+            }
+
+            if (item == null || item.getQuantity() <= 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity must be greater than 0.");
+            }
             shoppingCartDao.updateProductQuantity(userId, productId, item.getQuantity());
-            ShoppingCart cart = shoppingCartDao.getByUserId(userId);
-            return (cart != null) ? cart : new ShoppingCart();
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -90,14 +95,14 @@ public class ShoppingCartController {
         }
     }
 
-    // add a DELETE method to clear all products from the current users cart
-    // https://localhost:8080/cart
+    // DELETE http://localhost:8080/cart
     @DeleteMapping
-    public ShoppingCart clearCart(Principal principal) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void clearCart(Principal principal)
+    {
         try {
             int userId = getUserId(principal);
             shoppingCartDao.clearCart(userId);
-            return new ShoppingCart();
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -106,21 +111,16 @@ public class ShoppingCartController {
     }
 
     private int getUserId(Principal principal) {
-        if (principal == null)
+        if (principal == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not logged in.");
-        User user = userDao.getByUserName(principal.getName());
-        if (user == null)
+        }
+
+        String username = principal.getName();
+        User user = userDao.getByUserName(username);
+
+        if (user == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
+        }
         return user.getId();
     }
 }
-
-
-
-
-
-
-
-
-
-
