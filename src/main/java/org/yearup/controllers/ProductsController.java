@@ -11,20 +11,36 @@ import org.yearup.models.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
+//CONCEPT: Controller Layer (Spring REST Controller)
+//- This controller manages all HTTP requests related to products.
+//- It exposes endpoints under the /products URL.
+//- It handles filtering, lookup by ID, and admin-only CRUD operations.
+//- It delegates ALL database logic to ProductDao.
+
 @RestController
 @RequestMapping("/products")
 @CrossOrigin
 public class ProductsController
 {
+    // CONCEPT: Dependency Injection (DAO Layer)
+    //- ProductDao is an interface.
+    //- Spring injects MySqlProductDao at runtime.
+    //- This keeps the controller separate from database details.
     private ProductDao productDao;
 
+    //CONCEPT: Constructor Injection
+    //- Spring calls this constructor and supplies ProductDao.
+    //- This ensures the controller always has its required dependency.
     @Autowired
     public ProductsController(ProductDao productDao)
     {
         this.productDao = productDao;
     }
 
-    // NEW: GET /products/genres
+    //  ENDPOINT: GET /products/genres
+    //- Returns a list of unique genre values from the products table.
+    //- This is a read-only GET endpoint.
+    //- Often used to populate dropdown filters on the frontend.
     @GetMapping("/genres")
     @PreAuthorize("permitAll()")
     public List<String> getGenres()

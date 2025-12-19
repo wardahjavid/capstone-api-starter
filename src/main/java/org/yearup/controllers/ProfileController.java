@@ -11,6 +11,12 @@ import org.yearup.models.User;
 
 import java.security.Principal;
 
+//Controller Layer (Authenticated User Resource)
+//This controller manages profile data for the currently logged-in user
+// - It exposes endpoints under /profile.
+//- Unlike other controllers, it does NOT accept a userId in the URL.
+//- The user identity is derived from the authenticated Principal.
+
 @RestController
 @RequestMapping("/profile")
 @CrossOrigin

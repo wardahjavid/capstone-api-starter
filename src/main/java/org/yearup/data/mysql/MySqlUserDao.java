@@ -11,6 +11,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class talks to the database to create and look up users. It saves new users
+// with a securely hashed password, finds users by username or ID, checks if a
+// user exists, and returns user information so the app can handle login and
+// authorization.
 @Component
 public class MySqlUserDao extends MySqlDaoBase implements UserDao
 {

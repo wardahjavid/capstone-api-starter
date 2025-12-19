@@ -13,6 +13,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+//This class talks to the database to manage a user’s shopping cart. It
+// loads all cart items for a user (including product details), lets the app
+// add products, change quantities, and clear the cart, and then returns the
+// cart in a format the rest of the app can use.
 @Component
 public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDao
 {

@@ -10,6 +10,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class is the **MySQL/JDBC data access layer for products**:
+// it contains all the SQL needed to create, read, update, delete, and search
+// products in the database. Controllers call its methods to retrieve products
+// (with filters, by ID, by category, or by genre) or to modify product records,
+// while this class handles opening connections, running SQL safely with prepared
+// statements, and converting database rows into `Product` objects.
 @Component
 public class MySqlProductDao extends MySqlDaoBase implements ProductDao
 {

@@ -7,6 +7,15 @@ import org.yearup.data.ProfileDao;
 import javax.sql.DataSource;
 import java.sql.*;
 
+
+//This class is the MySQL/JDBC data access implementation for user profiles: it
+// handles creating a profile record, retrieving a profile by user ID, and updating
+// an existing profile in the `profiles` table. Controllers call these methods to
+// persist and fetch profile data, while this class manages database connections,
+// executes SQL safely with prepared statements, and maps database rows to `Profile`
+// objects.This class talks to the database to save, read, and update a user’s
+// profile. It takes profile information (like name, phone, and address),
+// stores it in the database, and retrieves or updates it when the app needs it.
 @Component
 public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
     public MySqlProfileDao(DataSource dataSource) {
