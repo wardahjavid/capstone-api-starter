@@ -35,19 +35,31 @@ Enforce validation rules on product, category, and profile inputs to ensure data
 
 ## Resources
 
-Bro Code Videos on Java 
+Bro Code Videos on Java on Youtube
+
+
+Getting started with @Controller in Spring
+https://www.youtube.com/watch?v=c9iKKAZY00g&list=PLGJny_f99PBKyPL6kfX3i8VB8K1QqxEUx
+
+Spring boot simple project | Book Store Management | MySql | Thymeleaf |JPA
+https://www.youtube.com/watch?v=xnur2ujza6k
 
 Spring Boot Tutorial for Beginners — Full Course
 Covers controllers, REST endpoints, routing, services, models, and running a Spring Boot app.
 (https://www.youtube.com/watch?v=Cw0J6jYJtzw)
 
-
-Build a Shopping Cart API in Spring Boot
-https://www.youtube.com/watch?v=V9OY6Ml3vV4
-
 Spring Boot + MySQL Course for Beginners
 Guided project showing full CRUD and database integration.
 https://www.youtube.com/watch?v=9SGDpanrc8U
+
+Spring Boot Project: Build a REST API for an E-commerce Platform
+https://www.youtube.com/watch?v=EWd3_I4X32g
+
+Spring Boot Tutorial for Beginners
+https://www.youtube.com/watch?v=gJrjgg1KVL4
+
+Java REST API with Spring Boot Tutorial | REST API CRUD Implementation
+https://www.youtube.com/watch?v=iBGkJln9BPo&list=PLcs1FElCmEu121gqGwlQt47d0SqNkzSTK
 
 Build a REST API with Spring Boot + MySQL
 Demo project similar to Capstone goals, REST CRUD endpoints.
